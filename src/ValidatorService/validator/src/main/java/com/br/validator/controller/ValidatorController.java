@@ -34,26 +34,20 @@ public class ValidatorController {
     )
     @PostMapping("/command")
     public void validateCommand(@RequestBody CommandRequest request) {
-        try{
-            log.info("Comando {} recebido para validação", request.commandEnum());
+        log.info("Comando {} recebido para validação", request.commandEnum());
 
-            var random = Math.random();
-            if (random < 0.001) {
-                log.info("Redirecionamento para o serviço de comando devido a falha na validação do comando");
-                throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Redirecionamento para o serviço de comando devido a falha na validação do comando");
-            }
-            log.info("Comando {} validado com sucesso", request.commandEnum());
-            rabbitTemplate.convertAndSend(
-                    RabbitConfig.EXCHANGE_NAME,
-                    RabbitConfig.ROUTING_KEY,
-                    request.commandEnum().name()
-            );
-            log.info("Comando {} enviado para o RabbitMQ", request.commandEnum());
-
-        }catch (Exception e){
-            log.error("Erro ao validar o comando {}: {}", request.commandEnum(), e.getMessage());
-            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Erro ao validar o comando " + request.commandEnum() + ": " + e.getMessage());
+        var random = Math.random();
+        if (random < 0.5) {
+            log.info("Redirecionamento para o serviço de comando devido a falha na validação do comando");
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Redirecionamento para o serviço de comando devido a falha na validação do comando");
         }
+        log.info("Comando {} validado com sucesso", request.commandEnum());
+        rabbitTemplate.convertAndSend(
+                RabbitConfig.EXCHANGE_NAME,
+                RabbitConfig.ROUTING_KEY,
+                request.commandEnum().name()
+        );
+        log.info("Comando {} enviado para o RabbitMQ", request.commandEnum());
     }
 
 }
