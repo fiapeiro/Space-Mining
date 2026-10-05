@@ -3,6 +3,8 @@
   <component name="ExternalStorageConfigurationManager" enabled="true" />
   <component name="FrameworkDetectionExcludesConfiguration">
     <file type="web" url="file://$PROJECT_DIR$/src/CommandService" />
+    <file type="web" url="file://$PROJECT_DIR$/src/ValidatorService/eureka" />
+    <file type="web" url="file://$PROJECT_DIR$/src/ValidatorService/validator" />
   </component>
   <component name="Kotlin2JsCompilerArguments">
     <option name="moduleKind" value="plain" />
